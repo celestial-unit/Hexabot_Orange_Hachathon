@@ -1,0 +1,4 @@
+#!/bin/sh
+# Simple pre-commit hook that allows commits to proceed
+exit 0
+

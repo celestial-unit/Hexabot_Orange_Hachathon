@@ -1,0 +1,62 @@
+# Hexabot Installation and Setup Guide
+
+# 1. Prerequisites Check
+# Check if Docker is installed
+docker --version
+
+# Check if Node.js/NVM is installed
+nvm --version
+nvm list
+
+# Use Node.js v20 or higher
+nvm use 20.18.1
+
+# 2. Initial Setup
+# Install project dependencies
+npm install
+
+# Install TypeScript (specific version for compatibility)
+npm install typescript@~5.3.3 --save-dev
+
+# Install Express for HTTP channel
+npm install express @types/express --save
+
+# 3. Install AI Plugins
+npm install hexabot-helper-ollama hexabot-helper-chatgpt hexabot-helper-gemini hexabot-plugin-ollama --save
+npm install hexabot-plugin-chatgpt hexabot-plugin-gemini --save
+
+# 4. Configure Environment Variables
+# Copy the example .env file or create a new one in docker/.env
+# Add these configurations:
+OLLAMA_BASE_URL=http://host.docker.internal:11434
+OPENAI_API_KEY=your_openai_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Get your API keys from:
+# OpenAI API key: https://platform.openai.com/api-keys
+# Gemini API key: https://makersuite.google.com/app/apikey
+# Ollama: Install locally, no API key needed
+
+# 5. Start Hexabot
+# Start all services using Docker Compose
+docker compose -f docker/docker-compose.yml up -d
+
+# 6. Access Hexabot
+# Web Interface: http://localhost:8080
+# API Endpoint: http://localhost:4000/chat
+
+# Test API with curl:
+curl -X POST http://localhost:4000/chat \
+    -H "Content-Type: application/json" \
+    -d '{"message": "Hello, bot!"}'
+
+# Useful Docker Commands
+# Stop all services:
+docker compose -f docker/docker-compose.yml down
+
+# View logs:
+docker compose -f docker/docker-compose.yml logs api
+
+# Restart services after configuration changes:
+docker compose -f docker/docker-compose.yml down && docker compose -f docker/docker-compose.yml up -d
+
