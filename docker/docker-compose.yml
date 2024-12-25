@@ -3,11 +3,11 @@ services:
     container_name: api
     build:
       context: ../
-      target: development # or "production"
+      target: development
     env_file: .env
     ports:
       - ${API_PORT}:3000
-      - 9229:9229 # vscode debug port
+      - 9229:9229
     networks:
       - db-network
       - app-network
@@ -55,9 +55,20 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    networks:
+      - app-network
+    volumes:
+      - ollama-data:/root/.ollama
+
 volumes:
   mongo-data:
   api-data:
+  ollama-data:
 
 networks:
   db-network:
